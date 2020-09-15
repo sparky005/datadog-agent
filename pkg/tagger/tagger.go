@@ -320,6 +320,30 @@ func (t *Tagger) List(cardinality collectors.TagCardinality) response.TaggerList
 	return r
 }
 
+type Entity struct {
+	ID   string
+	Tags []string
+}
+type EventType int
+
+const (
+	EventTypeAdd EventType = iota
+	EventTypeModify
+	EventTypeRemove
+)
+
+type EntityResponse struct {
+	EventType EventType
+	Entity    Entity
+}
+
+// TODO(juliogreff): document this
+func (t *Tagger) Subscribe() chan EntityResponse {
+	c := make(chan EntityResponse)
+
+	return c
+}
+
 // copyArray makes sure the tagger does not return internal slices
 // that could be modified by others, by explicitly copying the slice
 // contents to a new slice. As strings are references, the size of
